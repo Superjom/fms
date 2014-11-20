@@ -1,5 +1,6 @@
 CC=gcc
-CXX="/home/work/.jumbo/opt/gcc48/bin/g++"
+#CXX="/home/work/.jumbo/opt/gcc48/bin/g++"
+CXX=g++
 BIN="../bin"
 CXXFLAGS= -std=c++11 \
     -pthread \
