@@ -3,7 +3,7 @@
 #include "../data.h"
 #include "../core/all.h"
 #include "../utils/all.h"
-#include "./kl_fm.h"
+#include "./base_fm.h"
 
 namespace fms {
 

@@ -7,6 +7,7 @@
 #include "BaseSGD.h"
 #include "KLdistSGD.h"
 #include "PairSGD.h"
+#include "PairSigmoidSGD.h"
 
 #endif
 

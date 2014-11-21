@@ -116,7 +116,7 @@
 #define HAVE___BUILTIN_EXPECT 1
 
 /* define if your compiler has __sync_val_compare_and_swap */
-/* #undef HAVE___SYNC_VAL_COMPARE_AND_SWAP */
+#define HAVE___SYNC_VAL_COMPARE_AND_SWAP 1
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
@@ -144,14 +144,14 @@
 #define PACKAGE_VERSION "0.3.3"
 
 /* How to access the PC from a struct ucontext */
-#define PC_FROM_UCONTEXT uc_mcontext.gregs[REG_RIP]
+#define PC_FROM_UCONTEXT uc_mcontext.gregs[REG_EIP]
 
 /* Define to necessary symbol if this constant uses a non-standard name on
    your system. */
 /* #undef PTHREAD_CREATE_JOINABLE */
 
 /* The size of `void *', as computed by sizeof. */
-#define SIZEOF_VOID_P 8
+#define SIZEOF_VOID_P 4
 
 /* Define to 1 if you have the ANSI C header files. */
 /* #undef STDC_HEADERS */

@@ -41,10 +41,10 @@ public:
                 double q, o12, score1, score2;
                 double cost = forward(label, pre, next, pre_x_v_sum, next_x_v_sum, q, o12, score1, score2);
                 //cout << "cost\t" << cost << endl;
-                /*if(std::isnan(cost)) {
+                if(std::isnan(cost)) {
                     // 忽略 Nan 记录
                     continue;
-                }*/
+                }
                 backward(label, pre, next, pre_x_v_sum, next_x_v_sum, q, o12, score1, score2);
                 total_cost.cumulate(cost);
             }

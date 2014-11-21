@@ -16,7 +16,7 @@ THIRD_LIB=../third/local/glog/lib/libglog.a
 
 .PHONY:all test clean
 
-all: kl_fm_train.out kl_fm_predict.out pair_fm_train.out
+all: kl_fm_train.out kl_fm_predict.out pair_fm_train.out pair_sigmoid_fm_train.out
 
 kl_fm_train.out: kl_fm_train.cpp core/* utils/* data.h
 	mkdir -p $(BIN)
@@ -32,6 +32,11 @@ pair_fm_train.out: pair_fm_train.cpp core/* utils/* data.h
 	mkdir -p $(BIN)
 	$(CXX) pair_fm_train.cpp $(CXXFLAGS) $(THIRD_INCPATH) -Xlinker  $(THIRD_LIB)  -o pair_fm_train.out
 	mv pair_fm_train.out $(BIN)
+
+pair_sigmoid_fm_train.out: pair_sigmoid_fm_train.cpp core/* utils/* data.h
+	mkdir -p $(BIN)
+	$(CXX) pair_sigmoid_fm_train.cpp $(CXXFLAGS) $(THIRD_INCPATH) -Xlinker  $(THIRD_LIB)  -o pair_sigmoid_fm_train.out
+	mv pair_sigmoid_fm_train.out $(BIN)
 
 test: test_data.out test_split.out test_kl.out test_vec.out test_ListData.out
 
