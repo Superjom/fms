@@ -27,10 +27,15 @@ public:
                 Instance pre (list_ins.list[i]);
                 Instance next(list_ins.list[j]);
                 // 添加共同prefix
+                /*
                 for(auto it = list_ins.prefix.begin(); it != list_ins.prefix.end(); ++it) {
                     pre.feas.push_back(*it);
                     next.feas.push_back(*it);
                 }
+                */
+                merge_instance(list_ins.prefix, pre);
+                merge_instance(list_ins.prefix, next);
+
                 comp_t label = GREATER;
                 if (pre.target < next.target) {
                     label = LOWER;
@@ -43,6 +48,7 @@ public:
                 //cout << "cost\t" << cost << endl;
                 if(std::isnan(cost)) {
                     // 忽略 Nan 记录
+                    LOG(ERROR) << "NaN cost";
                     continue;
                 }
                 backward(label, pre, next, pre_x_v_sum, next_x_v_sum, q, o12, score1, score2);
@@ -61,10 +67,14 @@ public:
                 Instance pre(list_ins.list[i]);
                 Instance next(list_ins.list[j]);
                 // 添加共同prefix
+                /*
                 for(auto it = list_ins.prefix.begin(); it != list_ins.prefix.end(); ++it) {
                     pre.feas.push_back(*it);
                     next.feas.push_back(*it);
                 }
+                */
+                merge_instance(list_ins.prefix, pre);
+                merge_instance(list_ins.prefix, next);
                 //CHECK(list_ins.list[i].feas.size() + list_ins.prefix.size() == pre.feas.size());
                 comp_t label = GREATER;
                 if (pre.target < next.target) {
@@ -97,7 +107,7 @@ protected:
          * 根据pair的对错进行预测
          * TODO 具体的 EQUAL等标准需要一个软性的划分
          */
-        CHECK(!std::isnan(o12));
+        //CHECK(!std::isnan(o12));
         double cost = 1.0;
         if( (label == GREATER   && o12 >  0.0) || \
             (label == EQUAL     && o12 == 0.0) || \

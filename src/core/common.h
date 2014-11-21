@@ -8,9 +8,11 @@ namespace fms {
 // 数据单个记录
 struct Instance {
     struct Item {
-        index_t key;
-        double value;
-        Item(index_t key, double value) : key(key), value(value) { }
+        typedef index_t key_t;
+        typedef double value_t;
+        key_t key;
+        value_t value;
+        Item(key_t key, value_t value) : key(key), value(value) { }
         friend std::ostream &operator<< (std::ostream &os, const Item &other) {
             os << other.key << ":" << other.value;
             return os;
@@ -60,6 +62,34 @@ struct ListInstance {
         return os;
     }
 };
+
+void merge_instance(
+        const std::vector<Instance::Item> &list, 
+        Instance &toins) {
+    if(list.empty()) return;
+    typedef Instance::Item item_t;
+    std::map<item_t::key_t, item_t::value_t> dic;
+    for(auto it = list.begin(); it != list.end(); it ++) {
+        if(dic.count(it->key) > 0) {
+            dic[it->key] += it->value;
+        } else {
+            dic[it->key] = it->value;
+        }
+    }
+    for(auto it = toins.feas.begin(); it != toins.feas.end(); ++it) {
+        if(dic.count(it->key) > 0) {
+            dic[it->key] += it->value;
+        } else {
+            dic[it->key] = it->value;
+        }
+    }
+    // add to toins
+    toins.feas.clear();
+    for(auto it = dic.begin(); it != dic.end(); ++it) {
+        item_t item(it->first, it->second);
+        toins.feas.push_back( std::move(item));
+    }
+}
 
 
 

@@ -1,5 +1,7 @@
 #ifndef _CORE_SGD_PAIRSGD_H_
 #define _CORE_SGD_PAIRSGD_H_
+#include <map>
+#include "../common.h"
 #include "BaseSGD.h"
 
 namespace fms {
@@ -7,7 +9,6 @@ namespace fms {
  * pairwise Rank 的方式训练
  * 对order的学习
  */
-
 class PairSGD : public BaseSGD<ListInstance> {
 public:
     enum comp_t {    // pair两个元素间的大小关系
@@ -31,11 +32,15 @@ public:
 
                 Instance pre(list_ins.list[i]);
                 Instance next(list_ins.list[j]);
+                merge_instance(list_ins.prefix, pre);
+                merge_instance(list_ins.prefix, next);
                 // 添加共同prefix
+                /*
                 for(auto it = list_ins.prefix.begin(); it != list_ins.prefix.end(); ++it) {
                     pre.feas.push_back(*it);
                     next.feas.push_back(*it);
                 }
+                */
                 comp_t label = GREATER;
                 if (pre.target < next.target) {
                     label = LOWER;
@@ -66,10 +71,8 @@ public:
                 Instance pre(list_ins.list[i]);
                 Instance next(list_ins.list[j]);
                 // 添加共同prefix
-                for(auto it = list_ins.prefix.begin(); it != list_ins.prefix.end(); ++it) {
-                    pre.feas.push_back(*it);
-                    next.feas.push_back(*it);
-                }
+                merge_instance(list_ins.prefix, pre);
+                merge_instance(list_ins.prefix, next);
                 //CHECK(list_ins.list[i].feas.size() + list_ins.prefix.size() == pre.feas.size());
                 comp_t label = GREATER;
                 if (pre.target < next.target) {
@@ -102,11 +105,12 @@ protected:
          * 根据pair的对错进行预测
          * TODO 具体的 EQUAL等标准需要一个软性的划分
          */
-        CHECK(!std::isnan(o12));
+        //CHECK(!std::isnan(o12));
+        if(std::isnan(o12)) return o12;
         double cost = 1.0;
-        if( (label == GREATER && o12 > 0.0) || \
-            (label == EQUAL && o12 == 0.0) || \
-            (label == LOWER && o12 < 0.0) ) cost = 0.0;
+        if( (label == GREATER   && o12 >  0.0) || \
+            (label == EQUAL     && o12 == 0.0) || \
+            (label == LOWER     && o12 <  0.0) ) cost = 0.0;
         return cost;
     }
     void backward(comp_t label, const Instance &pre, const Instance &next, Vec &pre_x_v_sum, Vec &next_x_v_sum, double q, double o12) {
@@ -126,7 +130,7 @@ protected:
 protected:
     double cal_ins_fm_score(const Instance &ins, Vec &x_v_sum) {
         double x_v2sum{0.0}; // (xv)^2
-        double lr_score = 0.0;
+        double lr_score{0.0};
         //const double &p = ins.target;
         for(auto it = ins.feas.begin(); it != ins.feas.end(); ++it) {
             const index_t &key = it->key;
@@ -144,6 +148,7 @@ protected:
         //cout << "lr_score\t" << lr_score << endl;
         //lr_score = 0.0;
         //double o = lr_score + fm_score;
+        // TODO merge the lr_score !!!
         double o = fm_score;
         return o;
     }

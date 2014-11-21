@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     index_t batch_size = 10000;
     int num_iters = 10;
     int num_threads = 3;
-    string input_format = "";
+    string input_format = "Data";
     double learning_rate = 0.1;
     std::string output_model_path{""};
     // set up paramter engine
@@ -61,10 +61,7 @@ int main(int argc, char *argv[])
     if(cmdline.hasParameter(param_output_model_path)) {
         output_model_path = cmdline.getValue(param_output_model_path); 
     }
-    if(!cmdline.hasParameter(param_input_format)) {
-        LOG(ERROR) << "missing parameter input_format";
-        return 0;
-    } else {
+    if(cmdline.hasParameter(param_input_format)) {
         input_format = cmdline.getValue(param_input_format);
     }
     LOG(INFO) << "get parameter\t" << "train_path:\t" << train_path;
