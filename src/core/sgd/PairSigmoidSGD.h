@@ -24,7 +24,7 @@ public:
                 Vec pre_x_v_sum(_fm->dim());
                 Vec next_x_v_sum(_fm->dim());
 
-                Instance pre(list_ins.list[i]);
+                Instance pre (list_ins.list[i]);
                 Instance next(list_ins.list[j]);
                 // 添加共同prefix
                 for(auto it = list_ins.prefix.begin(); it != list_ins.prefix.end(); ++it) {
@@ -99,9 +99,9 @@ protected:
          */
         CHECK(!std::isnan(o12));
         double cost = 1.0;
-        if( (label == GREATER && o12 > 0.0) || \
-            (label == EQUAL && o12 == 0.0) || \
-            (label == LOWER && o12 < 0.0) ) cost = 0.0;
+        if( (label == GREATER   && o12 >  0.0) || \
+            (label == EQUAL     && o12 == 0.0) || \
+            (label == LOWER     && o12 <  0.0) ) cost = 0.0;
         return cost;
     }
     void backward(comp_t label, const Instance &pre, const Instance &next, Vec &pre_x_v_sum, Vec &next_x_v_sum, double q, double o12, double score1, double score2) {
@@ -143,16 +143,16 @@ protected:
         double grad_o_score = exp(score) / pow((1 + exp(score)), 2);
         SGDGradValue grad(_fm->dim());
         for(auto it = ins.feas.begin(); it != ins.feas.end(); ++it) {
-            const index_t &key = it->key;
-            const double &x = it->value;
-            double grad_score_lr = x;
+            const index_t   &key = it->key;
+            const double    &x = it->value;
+            double  grad_score_lr = x;
             FMValue &feature = _fm->feature(key);
-            Vec &v = feature.fm_w;
-            Vec grad_score_v(_fm->dim());
+            Vec     &v = feature.fm_w;
+            Vec     grad_score_v(_fm->dim());
             grad_score_v = x * (x_v_sum - x * v);
-            double grad_C_lr = grad_C_o * grad_o_score * grad_score_lr;
+            double  grad_C_lr = grad_C_o * grad_o_score * grad_score_lr;
             //cout << "grad_C_lr\t" << grad_C_lr << endl;
-            Vec grad_C_v = grad_C_o * grad_o_score * grad_score_v;
+            Vec     grad_C_v = grad_C_o * grad_o_score * grad_score_v;
             //cout << "grad_C_v\t" << grad_C_v << endl;
             grad.set(grad_C_lr, grad_C_v);
             _fm->batch_commit(key, grad);
