@@ -12,7 +12,7 @@ def gen_fm_features(length, start_id, end_id):
     for id in ids:
         fea = r.random()
         features.append(
-            "%d:%f" % (id, fea))
+            "%d:%f" % (id, 1))
     return features
 
 def gen_fm(length, start_id, end_id):
@@ -24,10 +24,10 @@ def gen_fm(length, start_id, end_id):
     return fm
 
 def gen_fm_pair():
-    common_prefix = " ".join( gen_fm_features(r.randint(2, 8), 1, 100))
-    f_fm = gen_fm( r.randint(2, 8), 101, 1000)
-    s_fm = gen_fm( r.randint(2, 8), 101, 1000)
-    return '\t'.join([common_prefix, f_fm, s_fm])
+    common_prefix = " ".join( gen_fm_features(r.randint(2, 8), 1, 5000))
+    length = r.randint(2, 8)
+    fms = [gen_fm( r.randint(2, 8), 5001, 10000) for i in range(length)]
+    return '\t'.join([common_prefix] + fms)
 
 if __name__ == '__main__':
     args = sys.argv[1:]

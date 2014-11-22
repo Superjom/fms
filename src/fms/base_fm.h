@@ -40,7 +40,7 @@ public:
         index_t span = _batch_size / num_threads;
 
         LOG(INFO) << "split batch number:\t" << num_batches;
-        LOG(INFO) << "eatch thread learns\t" << span << "\t records";
+        LOG(INFO) << "each thread learns\t" << span << "\t records";
         for (int iter = 0; iter < num_iters; iter++) {
             double train_cost = std::move(train_iter(num_threads));
             double test_cost = std::move(test_iter(num_threads));

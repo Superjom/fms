@@ -43,8 +43,12 @@ public:
             SGDGradValue normed_grad = std::move(_sgd_grad[key].normed());
             FMValue &fea = feature(key);
             // update lr weight
-            fea.lr2sum += pow(normed_grad.lr_g(), 2);
-            fea.lr_w -= _init_learning_rate * normed_grad.lr_g() / std::sqrt(fea.lr2sum);
+            if(normed_grad.lr_g() != 0.0) { // fix the lr_g NaN bug
+                fea.lr2sum += pow(normed_grad.lr_g(), 2);
+                fea.lr_w -= _init_learning_rate * normed_grad.lr_g() / std::sqrt(fea.lr2sum);
+            }
+            // TODO remove this check
+            //cout << "key\t" << key << "\tlr_w\t" << fea.lr_w << "\tlr2sum\t" << fea.lr2sum << endl;
             // update fm weight
             fea.fm2sum += (normed_grad.fm_g() * normed_grad.fm_g());
             fea.fm_w -= _init_learning_rate * normed_grad.fm_g() / sqrt(fea.fm2sum);

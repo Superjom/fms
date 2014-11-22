@@ -138,6 +138,7 @@ protected:
             const double &x = it->value;
             const double &w = feature.lr_w;
             Vec &v = feature.fm_w;
+            //cout << "w\t" << w << endl;
 
             lr_score += w * x;
             x_v_sum += (x * v);
@@ -147,9 +148,11 @@ protected:
         //cout << "fm_score\t" << fm_score << endl;
         //cout << "lr_score\t" << lr_score << endl;
         //lr_score = 0.0;
-        //double o = lr_score + fm_score;
+        double o = lr_score + fm_score;
+        //cout << "lr_score\t" << lr_score << endl;
+        //cout << "o\t" << o << endl;
         // TODO merge the lr_score !!!
-        double o = fm_score;
+        //double o = fm_score;
         return o;
     }
     void backward_ins(double grad_C_o, const Instance &ins, Vec &x_v_sum) {

@@ -41,6 +41,7 @@ public:
         CHECK(_n > 0.0);
         SGDGradValue tmp(_fm_g.size());
         tmp._lr_g = _lr_g / _n;
+        //cout << "tmp._lr_g\t" << tmp._lr_g << endl;
         tmp._fm_g = _fm_g / _n;
         return std::move(tmp);
     }
